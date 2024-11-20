@@ -18,6 +18,17 @@ module.exports = {
                test: /\.css$/, // Регулярное выражение для обработки файлов с расширением .css
                use: ['style-loader', 'css-loader'], // Загрузчики, используемые для обработки CSS-файлов
            },
+           {
+                test: /\.(png|jpe?g|gif|svg)$/i, // Поддержка изображений
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[path][name].[ext]', // Сохраняем структуру путей
+                        },
+                    },
+                ],
+            },
        ],
    },
 
@@ -28,6 +39,24 @@ module.exports = {
            inject: true,
            chunks: ['index'],
            filename: 'index.html'
+       }),
+       new HtmlWebpackPlugin({
+           template: './src/about.html',
+           inject: true,
+           chunks: ['index'],
+           filename: 'about.html'
+       }),
+       new HtmlWebpackPlugin({
+           template: './src/projects.html',
+           inject: true,
+           chunks: ['index'],
+           filename: 'projects.html'
+       }),
+       new HtmlWebpackPlugin({
+           template: './src/tasks.html',
+           inject: true,
+           chunks: ['index'],
+           filename: 'tasks.html'
        }),
    ],
 

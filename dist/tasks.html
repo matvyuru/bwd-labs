@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список задач</title>
+    <link rel="stylesheet" href="style.css">
+     <link rel="icon" type="image/x-icon" href="images/cat.ico">
+</head>
+<body>
+<header>
+    <div class="logo">Логотип</div>
+    <nav>
+        <ul class="nav">
+            <li><a href="index.html">Главная</a></li>
+            <li><a href="projects.html">Проекты</a></li>
+            <li class="active">Список задач</li>
+            <li><a href="about.html">О приложении</a></li>
+        </ul>
+        <div class="burger-menu" onclick="toggleMenu()" id="burger">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </div>
+    </nav>
+</header>
+<div class="sidebar" id="sidebar">
+    <ul>
+            <li><a href="index.html">Главная</a></li>
+            <li><a href="projects.html">Проекты</a></li>
+            <li class="active">Список задач</li>
+            <li><a href="about.html">О приложении</a></li>
+        </ul>
+</div>
+<main>
+    <h1>Список задач</h1>
+    <div class="button-container">
+        <button id="open-dialog">Добавить задачу</button>
+    </div>
+    <div id="task-container" class="task-container"> 
+        <!-- Карточки задач будут добавлены сюда -->
+    </div>
+</main>
+
+<dialog id="task-dialog">
+    <form method="dialog" id="taskForm" onsubmit="addTask(event)">
+        <h2>Добавить новую задачу</h2>
+        <input type="text" id="taskinp" placeholder="Название задачи" required>
+        <button type="submit">Добавить</button>
+        <button type="button" onclick="closeDialog()">Отмена</button>
+    </form>
+</dialog>
+<script src="bundle.js"></script>
+<script>
+    const taskList = JSON.parse(localStorage.getItem('taskList')) || [];
+    
+    function renderTasks() {
+        const taskContainer = document.getElementById("task-container");
+        taskContainer.innerHTML = '';
+        taskList.forEach((task, index) => {
+            const card = document.createElement("div");
+            card.className = `task-card ${task.completed ? 'completed' : ''} ${task.inProgress ? 'in-progress' : ''}`;
+            card.innerHTML = `
+                <div class="task-text">${task.text}</div>
+                <div>
+                    <input type="checkbox" onchange="markInProgress(this, ${index})" ${task.inProgress ? 'checked' : ''}> В работе
+                    <input type="checkbox" onchange="toggleCompleted(this, ${index})" ${task.completed ? 'checked' : ''}> Выполнена
+                    <button class="delete-button" onclick="deleteTask(${index})">Удалить</button>
+                </div>
+            `;
+            taskContainer.appendChild(card);
+        });
+    }
+
+    function addTask(event) {
+        event.preventDefault();
+        const taskInput = document.getElementById("taskinp");
+        const taskText = taskInput.value;
+
+        taskList.push({ text: taskText, inProgress: false, completed: false });
+        localStorage.setItem('taskList', JSON.stringify(taskList));
+        taskInput.value = "";
+        renderTasks();
+        closeDialog();
+    }
+
+    function deleteTask(index) {
+        taskList.splice(index, 1);
+        localStorage.setItem('taskList', JSON.stringify(taskList));
+        renderTasks();
+    }
+
+    function markInProgress(checkbox, index) {
+        taskList[index].inProgress = checkbox.checked;
+        localStorage.setItem('taskList', JSON.stringify(taskList));
+        renderTasks();
+    }
+
+    function toggleCompleted(checkbox, index) {
+        taskList[index].completed = checkbox.checked;
+        localStorage.setItem('taskList', JSON.stringify(taskList));
+        renderTasks();
+    }
+
+    function closeDialog() {
+        document.getElementById('task-dialog').close();
+    }
+
+    document.getElementById('open-dialog').onclick = function() {
+        document.getElementById('task-dialog').showModal();
+    }
+
+    function toggleMenu() {
+        document.querySelector('.nav').classList.toggle('active');
+        const sidebar = document.getElementById('sidebar'); // Получаем элементы сайдбара
+    const burger = document.getElementById('burger'); // Получаем бургер-меню
+
+    // Переключаем классы для сайдбара и бургер-меню
+    sidebar.classList.toggle('active');
+    burger.classList.toggle('active');
+
+    // Предотвращаем прокрутку страницы, когда сайдбар открыт
+    document.body.classList.toggle('no-scroll');
+    }
+
+    window.onclick = function(event) {
+        const dialog = document.getElementById('task-dialog');
+        if (event.target === dialog) {
+            dialog.close();
+        }
+    }
+
+    renderTasks();
+</script>
+</body>
+</html> 

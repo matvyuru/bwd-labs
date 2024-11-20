@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О приложении</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="images/cat.ico">
+</head>
+<body>
+    <header>
+        <div class="logo">Логотип</div>
+        <nav>
+    <ul class="nav">
+        <li><a href="index.html">Главная</a></li>
+        <li><a href="projects.html">Проекты</a></li>
+        <li><a href="tasks.html">Список задач</a></li>
+        <li class="active">О приложении</li>
+    </ul>
+    <div class="burger-menu" onclick="toggleMenu()" id="burger">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </div>
+</nav>
+    </header>
+<div class="sidebar" id="sidebar">
+    <ul>
+        <li><a href="index.html">Главная</a></li>
+        <li><a href="projects.html">Проекты</a></li>
+        <li><a href="tasks.html">Список задач</a></li>
+        <li class="active">О приложении</li>
+    </ul>
+    </div>
+    <main>
+    <h1>О приложении</h1>
+    <p>Это приложение помогает вам управлять своими задачами, организовывая их в удобном интерфейсе. Вы можете добавлять, редактировать и удалять задачи, отслеживать их статус и многое другое.</p>
+    
+    <h2>Функции приложения</h2>
+    <ul>
+        <li>Добавление новых задач</li>
+        <li>Отметка задач как выполненные</li>
+        <li>Удаление задач</li>
+        <li>Отображение задач в разных состояниях</li>
+    </ul>
+
+    <button onclick="window.history.back()">Вернуться к списку задач</button>
+</main>
+<script src="bundle.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
